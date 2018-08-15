@@ -1,7 +1,5 @@
-rootProject.name = 'FoonameMobile'
-include ':react-native-twitter-signin'
-project(':react-native-twitter-signin').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-twitter-signin/android')
-include ':react-native-i18n'
-project(':react-native-i18n').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-i18n/android')
+rootProject.name = 'foonameMobile'
+include ':react-native-auth0'
+project(':react-native-auth0').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-auth0/android')
 
 include ':app'

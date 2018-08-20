@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, Image, View, Button } from 'react-native'
+import { ScrollView, Text, Linking
+, View, Button } from 'react-native'
 import Auth0 from 'react-native-auth0'
 const auth0 = new Auth0({
   domain: 'fooname.eu.auth0.com',
@@ -32,6 +33,7 @@ export default class LaunchScreen extends Component {
               <Text>Login with Twitter to continue</Text>
             </View>
             <Button onPress={this.loginWithTwitter} title='Login with twitter' />
+            <Button title='Login with loopback' onPress={() => { Linking.openURL('http://127.0.0.1:8080/api/auth/twitter') }}/>
           </View>
         </ScrollView>
       </View>

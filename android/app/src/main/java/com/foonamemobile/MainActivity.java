@@ -1,4 +1,4 @@
-package com.foonamemobile;
+package ga.fooname.app;
 
 import com.facebook.react.ReactActivity;
 

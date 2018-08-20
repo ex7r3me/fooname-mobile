@@ -1,4 +1,4 @@
-package com.foonamemobile;
+package ga.fooname.app;
 
 import android.app.Application;
 

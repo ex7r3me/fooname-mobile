@@ -1,12 +1,15 @@
-import { StackNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation'
 import ProfileScreen from '../Containers/ProfileScreen'
 import LaunchScreen from '../Containers/LaunchScreen'
 
 import styles from './Styles/NavigationStyles'
 
 // Manifest of possible screens
-const PrimaryNav = StackNavigator({
-  ProfileScreen: { screen: ProfileScreen },
+const PrimaryNav = createStackNavigator({
+  ProfileScreen: {
+    screen: ProfileScreen,
+    path: 'profile/:credentials'
+  },
   LaunchScreen: { screen: LaunchScreen }
 }, {
   // Default config for all screens

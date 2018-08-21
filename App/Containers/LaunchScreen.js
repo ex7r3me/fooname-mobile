@@ -33,7 +33,19 @@ export default class LaunchScreen extends Component {
               <Text>Login with Twitter to continue</Text>
             </View>
             <Button onPress={this.loginWithTwitter} title='Login with twitter' />
-            <Button title='Login with loopback' onPress={() => { Linking.openURL('http://127.0.0.1:8080/api/auth/twitter') }}/>
+            <Button title='Login with loopback' onPress={() => { Linking.openURL('http://127.0.0.1:8080/api/auth/twitter') }} />
+            <Button
+              title='Profile'
+              onPress={() => {
+                this.props.navigation.navigate('ProfileScreen')
+              }}
+            />
+            <Button
+              title='Profile set'
+              onPress={() => {
+                this.props.navigation.navigate('ProfileScreen', {credentials: 'why not?'})
+              }} />
+
           </View>
         </ScrollView>
       </View>

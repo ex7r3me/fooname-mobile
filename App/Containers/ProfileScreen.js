@@ -28,31 +28,44 @@ class ProfileScreen extends Component {
     const credentials = JSON.stringify(navigation.getParam('credentials'))
     if (credentials) {
       this._storeAccessToken(credentials)
-    } else { this._retrieveData() }
-    this.state = {
-      credentials
+    } else {
+      this._retrieveData()
     }
+    this.state = { credentials, latitude: null, longitude: null, error: null }
   }
-  _storeAccessToken = async (accesstoKen) => {
+  componentDidMount () {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          error: null
+        })
+      },
+      error => this.setState({ error: error.message }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    )
+  }
+  _storeAccessToken = async accesstoKen => {
     try {
       await AsyncStorage.setItem('accessToken', accesstoKen)
     } catch (error) {
-        // Error saving data
+      // Error saving data
     }
-  }
+  };
   _retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('accessToken')
       if (value !== null) {
-      // We have data!!
+        // We have data!!
         let credentials = value.replace(/['"]+/g, '')
-        this.setState({credentials})
+        this.setState({ credentials })
         accessToken = credentials
       }
     } catch (error) {
-    // Error retrieving data
+      // Error retrieving data
     }
-  }
+  };
 
   render () {
     let props = this.props
@@ -63,6 +76,10 @@ class ProfileScreen extends Component {
         </Body>
       </Header>
       <Content>
+        <Text>Here > </Text>
+        <Text>Latitude: {this.state.latitude}</Text>
+        <Text>Longitude: {this.state.longitude}</Text>
+        <Text>{this.state.error}</Text>
         <Text>User Profile</Text>
         <Text>{this.state.credentials}</Text>
         <TextInput onChangeText={props.handleChange('cityId')} onBlur={props.handleBlur('cityId')} value={props.values.cityId} />

@@ -38,6 +38,7 @@ const create = (baseURL = 'http://127.0.0.1:8080/api/') => {
   const getRate = () => api.get('rate_limit')
   const getUser = (username) => api.get('search/users', {q: username})
   const saveCityId = (cityId, accessToken) => api.patch(`/users/me?access_token=${accessToken}`, {cityId})
+  const patchByCoordination = (lat, lon, accessToken) => api.patch(`/users/coordination?access_token=${accessToken}`, {lat, lon})
 
   // ------
   // STEP 3
@@ -56,7 +57,8 @@ const create = (baseURL = 'http://127.0.0.1:8080/api/') => {
     getRoot,
     getRate,
     getUser,
-    saveCityId
+    saveCityId,
+    patchByCoordination
   }
 }
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { AsyncStorage } from 'react-native'
-import { Toast, Container, Header, Content, Form, Item, Input, Text, Left, Icon, Body, Title } from 'native-base'
-import { Button, TextInput, View } from 'react-native'
+import { Toast, Container, Header, Content, Text, Body, Title } from 'native-base'
+import { AsyncStorage, Button, TextInput } from 'react-native'
 import { withFormik } from 'formik'
 import API from '../../App/Services/Api'
 
@@ -31,7 +30,7 @@ class ProfileScreen extends Component {
     } else {
       this._retrieveData()
     }
-    this.state = { credentials, latitude: null, longitude: null, error: null }
+    this.state = { credentials, locationButton: false, latitude: null, longitude: null, error: null }
   }
   componentDidMount () {
     navigator.geolocation.getCurrentPosition(
@@ -39,6 +38,7 @@ class ProfileScreen extends Component {
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
+          locationButton: true,
           error: null
         })
       },
@@ -46,10 +46,15 @@ class ProfileScreen extends Component {
         Toast.show({
           text: error.message
         })
-        this.setState({ error: error.message })
+        this.setState({ error: error.message, locationButton: false })
       },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     )
+  }
+  saveCoordination = () => {
+    let api = API.create()
+    const {latitude, longitude} = this.state
+    api.patchByCoordination(latitude, longitude, accessToken)
   }
   _storeAccessToken = async accesstoKen => {
     try {
@@ -89,6 +94,8 @@ class ProfileScreen extends Component {
         <Text>{this.state.credentials}</Text>
         <TextInput onChangeText={props.handleChange('cityId')} onBlur={props.handleBlur('cityId')} value={props.values.cityId} />
         <Button onPress={props.handleSubmit} title='Submit' />
+        <Button onPress={this.saveCoordination} title='Save by location' />
+
       </Content>
     </Container>
   }

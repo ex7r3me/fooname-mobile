@@ -26,11 +26,23 @@ class ProfileScreen extends Component {
     const { navigation } = this.props
     const credentials = JSON.stringify(navigation.getParam('credentials'))
     if (credentials) {
+      console.log('cred', credentials)
       this._storeAccessToken(credentials)
     } else {
       this._retrieveData()
     }
     this.state = { credentials, locationButton: false, latitude: null, longitude: null, error: null }
+  }
+  _logout = async() => {
+    try {
+      let api = API.create()
+      await api.logout(this.state.credentials)
+      await AsyncStorage.removeItem('accessToken')
+      this._retrieveData()
+      this.props.navigation.navigate('LaunchScreen')
+    } catch (error) {
+      // Error saving data
+    }
   }
   componentDidMount () {
     navigator.geolocation.getCurrentPosition(
@@ -62,20 +74,23 @@ class ProfileScreen extends Component {
     } catch (error) {
       // Error saving data
     }
-  };
+  }
   _retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('accessToken')
+      console.log(value)
       if (value !== null) {
         // We have data!!
         let credentials = value.replace(/['"]+/g, '')
         this.setState({ credentials })
         accessToken = credentials
+      } else {
+        this.setState({credentials: null})
       }
     } catch (error) {
       // Error retrieving data
     }
-  };
+  }
 
   render () {
     let props = this.props
@@ -95,7 +110,7 @@ class ProfileScreen extends Component {
         <TextInput onChangeText={props.handleChange('cityId')} onBlur={props.handleBlur('cityId')} value={props.values.cityId} />
         <Button onPress={props.handleSubmit} title='Submit' />
         <Button onPress={this.saveCoordination} title='Save by location' />
-
+        <Button onPress={this._logout} title='Logout' />
       </Content>
     </Container>
   }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { ScrollView, Text, Linking
 , View, Button } from 'react-native'
+import { Container, Header, Left, Content } from 'native-base'
 import Auth0 from 'react-native-auth0'
 const auth0 = new Auth0({
   domain: 'fooname.eu.auth0.com',
@@ -25,30 +26,34 @@ export default class LaunchScreen extends Component {
   }
   render () {
     return (
-      <View style={styles.mainContainer}>
-        <ScrollView style={styles.container}>
-          <View style={styles.section} >
-            <View style={styles.centered}>
-              <Text>Welcome to fooName</Text>
-              <Text>Login with Twitter to continue</Text>
-            </View>
-            <Button onPress={this.loginWithTwitter} title='Login with twitter' />
-            <Button title='Login with loopback' onPress={() => { Linking.openURL('http://127.0.0.1:8080/api/auth/twitter') }} />
-            <Button
-              title='Profile'
-              onPress={() => {
-                this.props.navigation.navigate('ProfileScreen')
-              }}
+      <Container>
+        <Content>
+          <View style={styles.mainContainer}>
+            <ScrollView style={styles.container}>
+              <View style={styles.section} >
+                <View style={styles.centered}>
+                  <Text>Welcome to fooName</Text>
+                  <Text>Login with Twitter to continue</Text>
+                </View>
+                <Button onPress={this.loginWithTwitter} title='Login with twitter' />
+                <Button title='Login with loopback' onPress={() => { Linking.openURL('http://127.0.0.1:8080/api/auth/twitter') }} />
+                <Button
+                  title='Profile'
+                  onPress={() => {
+                    this.props.navigation.navigate('ProfileScreen')
+                  }}
             />
-            <Button
-              title='Profile set'
-              onPress={() => {
-                this.props.navigation.navigate('ProfileScreen', {credentials: 'why not?'})
-              }} />
+                <Button
+                  title='Profile set'
+                  onPress={() => {
+                    this.props.navigation.navigate('ProfileScreen', {credentials: 'why not?'})
+                  }} />
 
+              </View>
+            </ScrollView>
           </View>
-        </ScrollView>
-      </View>
+        </Content>
+      </Container>
     )
   }
 }

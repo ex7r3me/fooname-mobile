@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Toast, Container, Header, Content, Text, Body, Title } from 'native-base'
+import { Toast, Container, Header, Content, Text, Left } from 'native-base'
 import { AsyncStorage, Button, TextInput } from 'react-native'
 import { withFormik } from 'formik'
 import API from '../../App/Services/Api'
@@ -96,10 +96,16 @@ class ProfileScreen extends Component {
     let props = this.props
     return <Container>
       <Header>
-        <Body>
-          <Title>Profile</Title>
-        </Body>
+        <Left>
+          <Button
+            title='Menu'
+            onPress={() => {
+              this.props.navigation.openDrawer()
+            }}
+    />
+        </Left>
       </Header>
+
       <Content>
         <Text>Here > </Text>
         <Text>Latitude: {this.state.latitude}</Text>

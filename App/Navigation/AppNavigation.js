@@ -1,11 +1,11 @@
-import { createStackNavigator } from 'react-navigation'
+import { createDrawerNavigator } from 'react-navigation'
 import ProfileScreen from '../Containers/ProfileScreen'
 import LaunchScreen from '../Containers/LaunchScreen'
 
 import styles from './Styles/NavigationStyles'
 
 // Manifest of possible screens
-const PrimaryNav = createStackNavigator({
+const PrimaryNav = createDrawerNavigator({
   ProfileScreen: {
     screen: ProfileScreen,
     path: 'profile/:credentials'

@@ -27,6 +27,15 @@ export default class LaunchScreen extends Component {
   render () {
     return (
       <Container>
+        <Header>
+          <Left>
+            <Button
+              title='Menu'
+              onPress={() => {
+                this.props.navigation.openDrawer()
+              }} />
+          </Left>
+        </Header>
         <Content>
           <View style={styles.mainContainer}>
             <ScrollView style={styles.container}>

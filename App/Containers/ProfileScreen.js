@@ -31,6 +31,9 @@ const enhancer = withFormik({
 })
 
 class ProfileScreen extends Component {
+  static navigationOptions = {
+    drawerLabel: 'Profile'
+  }
   constructor (props) {
     super(props)
     const { navigation } = this.props
@@ -111,7 +114,7 @@ class ProfileScreen extends Component {
   render () {
     let props = this.props
     return (
-      <Container>
+      <Container style={styles}>
         <Header>
           <Left>
             <Button
@@ -143,7 +146,7 @@ class ProfileScreen extends Component {
             value={props.values.cityId}
           />
           <Button onPress={props.handleSubmit}><Text>Submit</Text></Button>
-          <Button onPress={this.saveCoordination}>
+          <Button style={styles.button} onPress={this.saveCoordination}>
             <Text>Save By Location</Text>
           </Button>
           <Button onPress={this._logout}><Text>Logout</Text></Button>

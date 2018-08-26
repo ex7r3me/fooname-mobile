@@ -14,5 +14,8 @@ export default StyleSheet.create({
   },
   centered: {
     alignItems: 'center'
+  },
+  button: {
+    marginTop: 15
   }
 })

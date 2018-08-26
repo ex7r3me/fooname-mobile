@@ -15,12 +15,15 @@ import {
 import styles from './Styles/LaunchScreenStyles'
 
 export default class LaunchScreen extends Component {
+  static navigationOptions = {
+    drawerLabel: 'Home'
+  }
   openProfileScreen = credentials => {
     this.props.navigation.navigate('ProfileScreen', { credentials })
   }
   render () {
     return (
-      <Container>
+      <Container style={styles}>
         <Header>
           <Left>
             <Button
@@ -46,14 +49,21 @@ export default class LaunchScreen extends Component {
                   <Text>Login with Twitter to continue</Text>
                 </View>
                 <Button
-				light
+                  light
+                  large
+                  block
+                  style={styles.button}
                   onPress={() => {
                     Linking.openURL('http://127.0.0.1:8080/api/auth/twitter')
                   }}
                 >
-                  <Text>Login with loopback</Text>
+                  <Text>Login with Twitter</Text>
                 </Button>
                 <Button
+                  light
+                  large
+                  block
+                  style={styles.button}
                   onPress={() => {
                     this.props.navigation.navigate('ProfileScreen')
                   }}
@@ -61,6 +71,10 @@ export default class LaunchScreen extends Component {
                   <Text>Profile</Text>
                 </Button>
                 <Button
+                  light
+                  large
+                  block
+                  style={styles.button}
                   onPress={() => {
                     this.props.navigation.navigate('ProfileScreen', {
                       credentials: 'why not?'

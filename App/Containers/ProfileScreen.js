@@ -1,6 +1,18 @@
 import React, { Component } from 'react'
-import { Toast, Container, Header, Content, Text, Left } from 'native-base'
-import { AsyncStorage, Button, TextInput } from 'react-native'
+import {
+  Button,
+  Icon,
+  Toast,
+  Container,
+  Header,
+  Content,
+  Text,
+  Right,
+  Left,
+  Body,
+  Title
+} from 'native-base'
+import { AsyncStorage, TextInput } from 'react-native'
 import { withFormik } from 'formik'
 import API from '../../App/Services/Api'
 
@@ -10,15 +22,13 @@ import API from '../../App/Services/Api'
 // Styles
 import styles from './Styles/ProfileScreenStyle'
 let accessToken
-const enhancer = withFormik(
-  {
-    handleSubmit: (values, actions) => {
-      let api = API.create()
-      const cityId = values.cityId
-      api.saveCityId(cityId, accessToken)
-    }
+const enhancer = withFormik({
+  handleSubmit: (values, actions) => {
+    let api = API.create()
+    const cityId = values.cityId
+    api.saveCityId(cityId, accessToken)
   }
-)
+})
 
 class ProfileScreen extends Component {
   constructor (props) {
@@ -31,9 +41,15 @@ class ProfileScreen extends Component {
     } else {
       this._retrieveData()
     }
-    this.state = { credentials, locationButton: false, latitude: null, longitude: null, error: null }
+    this.state = {
+      credentials,
+      locationButton: false,
+      latitude: null,
+      longitude: null,
+      error: null
+    }
   }
-  _logout = async() => {
+  _logout = async () => {
     try {
       let api = API.create()
       await api.logout(this.state.credentials)
@@ -60,12 +76,12 @@ class ProfileScreen extends Component {
         })
         this.setState({ error: error.message, locationButton: false })
       },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+      { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
     )
   }
   saveCoordination = () => {
     let api = API.create()
-    const {latitude, longitude} = this.state
+    const { latitude, longitude } = this.state
     api.patchByCoordination(latitude, longitude, accessToken)
   }
   _storeAccessToken = async accesstoKen => {
@@ -85,7 +101,7 @@ class ProfileScreen extends Component {
         this.setState({ credentials })
         accessToken = credentials
       } else {
-        this.setState({credentials: null})
+        this.setState({ credentials: null })
       }
     } catch (error) {
       // Error retrieving data
@@ -94,31 +110,46 @@ class ProfileScreen extends Component {
 
   render () {
     let props = this.props
-    return <Container>
-      <Header>
-        <Left>
-          <Button
-            title='Menu'
-            onPress={() => {
-              this.props.navigation.openDrawer()
-            }}
-    />
-        </Left>
-      </Header>
+    return (
+      <Container>
+        <Header>
+          <Left>
+            <Button
+              transparent
+              onPress={() => {
+                this.props.navigation.openDrawer()
+              }}
+            >
+              <Icon type='MaterialCommunityIcons' name='menu' />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Profile</Title>
+          </Body>
+          <Right />
 
-      <Content>
-        <Text>Here > </Text>
-        <Text>Latitude: {this.state.latitude}</Text>
-        <Text>Longitude: {this.state.longitude}</Text>
-        <Text>{this.state.error}</Text>
-        <Text>User Profile</Text>
-        <Text>{this.state.credentials}</Text>
-        <TextInput onChangeText={props.handleChange('cityId')} onBlur={props.handleBlur('cityId')} value={props.values.cityId} />
-        <Button onPress={props.handleSubmit} title='Submit' />
-        <Button onPress={this.saveCoordination} title='Save by location' />
-        <Button onPress={this._logout} title='Logout' />
-      </Content>
-    </Container>
+        </Header>
+
+        <Content>
+          <Text>Here</Text>
+          <Text>Latitude: {this.state.latitude}</Text>
+          <Text>Longitude: {this.state.longitude}</Text>
+          <Text>{this.state.error}</Text>
+          <Text>User Profile</Text>
+          <Text>{this.state.credentials}</Text>
+          <TextInput
+            onChangeText={props.handleChange('cityId')}
+            onBlur={props.handleBlur('cityId')}
+            value={props.values.cityId}
+          />
+          <Button onPress={props.handleSubmit}><Text>Submit</Text></Button>
+          <Button onPress={this.saveCoordination}>
+            <Text>Save By Location</Text>
+          </Button>
+          <Button onPress={this._logout}><Text>Logout</Text></Button>
+        </Content>
+      </Container>
+    )
   }
 }
 

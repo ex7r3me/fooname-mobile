@@ -1,28 +1,22 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, Linking
-, View, Button } from 'react-native'
-import { Container, Header, Left, Content } from 'native-base'
-import Auth0 from 'react-native-auth0'
-const auth0 = new Auth0({
-  domain: 'fooname.eu.auth0.com',
-  clientId: '7mgRrH24na7Rt3X-75AsZRuRZyJ7DuHl'
-})
+import { ScrollView, Text, Linking, View } from 'react-native'
+import {
+  Container,
+  Header,
+  Left,
+  Content,
+  Icon,
+  Title,
+  Body,
+  Right,
+  Button
+} from 'native-base'
 // Styles
 import styles from './Styles/LaunchScreenStyles'
 
 export default class LaunchScreen extends Component {
-  openProfileScreen = (credentials) => {
-    this.props.navigation.navigate('ProfileScreen', {credentials})
-  }
-  loginWithTwitter = () => {
-    auth0
-      .webAuth
-      .authorize({ scope: 'openid profile email', audience: 'https://fooname.eu.auth0.com/userinfo' })
-      .then(credentials => {
-        this.openProfileScreen(credentials)
-      }
-      )
-      .catch(error => console.log(error))
+  openProfileScreen = credentials => {
+    this.props.navigation.navigate('ProfileScreen', { credentials })
   }
   render () {
     return (
@@ -30,34 +24,51 @@ export default class LaunchScreen extends Component {
         <Header>
           <Left>
             <Button
-              title='Menu'
+              transparent
               onPress={() => {
                 this.props.navigation.openDrawer()
-              }} />
+              }}
+            >
+              <Icon type='MaterialCommunityIcons' name='menu' />
+            </Button>
           </Left>
+          <Body>
+            <Title>Login</Title>
+          </Body>
+          <Right />
         </Header>
         <Content>
           <View style={styles.mainContainer}>
             <ScrollView style={styles.container}>
-              <View style={styles.section} >
+              <View style={styles.section}>
                 <View style={styles.centered}>
                   <Text>Welcome to fooName</Text>
                   <Text>Login with Twitter to continue</Text>
                 </View>
-                <Button onPress={this.loginWithTwitter} title='Login with twitter' />
-                <Button title='Login with loopback' onPress={() => { Linking.openURL('http://127.0.0.1:8080/api/auth/twitter') }} />
                 <Button
-                  title='Profile'
+				light
+                  onPress={() => {
+                    Linking.openURL('http://127.0.0.1:8080/api/auth/twitter')
+                  }}
+                >
+                  <Text>Login with loopback</Text>
+                </Button>
+                <Button
                   onPress={() => {
                     this.props.navigation.navigate('ProfileScreen')
                   }}
-            />
+                >
+                  <Text>Profile</Text>
+                </Button>
                 <Button
-                  title='Profile set'
                   onPress={() => {
-                    this.props.navigation.navigate('ProfileScreen', {credentials: 'why not?'})
-                  }} />
-
+                    this.props.navigation.navigate('ProfileScreen', {
+                      credentials: 'why not?'
+                    })
+                  }}
+                >
+                  <Text>Profile set</Text>
+                </Button>
               </View>
             </ScrollView>
           </View>

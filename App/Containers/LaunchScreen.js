@@ -25,16 +25,6 @@ export default class LaunchScreen extends Component {
     return (
       <Container style={styles}>
         <Header>
-          <Left>
-            <Button
-              transparent
-              onPress={() => {
-                this.props.navigation.openDrawer()
-              }}
-            >
-              <Icon type='MaterialCommunityIcons' name='menu' />
-            </Button>
-          </Left>
           <Body>
             <Title>Login</Title>
           </Body>

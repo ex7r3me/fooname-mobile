@@ -58,7 +58,7 @@ class ProfileScreen extends Component {
       await api.logout(this.state.credentials)
       await AsyncStorage.removeItem('accessToken')
       this._retrieveData()
-      this.props.navigation.navigate('LaunchScreen')
+      this.props.navigation.navigate('Auth')
     } catch (error) {
       // Error saving data
     }
@@ -97,7 +97,6 @@ class ProfileScreen extends Component {
   _retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('accessToken')
-      console.log(value)
       if (value !== null) {
         // We have data!!
         let credentials = value.replace(/['"]+/g, '')

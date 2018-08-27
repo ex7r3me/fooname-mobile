@@ -1,23 +1,49 @@
-import { createDrawerNavigator } from 'react-navigation'
+import {
+  createStackNavigator,
+  createSwitchNavigator,
+  createDrawerNavigator
+} from 'react-navigation'
+import AuthLoadingScreen from '../Containers/AuthLoadingScreen'
 import ProfileScreen from '../Containers/ProfileScreen'
 import LaunchScreen from '../Containers/LaunchScreen'
 
 import styles from './Styles/NavigationStyles'
 
-// Manifest of possible screens
-const PrimaryNav = createDrawerNavigator({
-  ProfileScreen: {
-    screen: ProfileScreen,
-    path: 'profile/:credentials'
+const AppDrawer = createDrawerNavigator(
+  {
+    ProfileScreen: {
+      screen: ProfileScreen,
+      path: 'profile/:credentials'
+    }
   },
-  LaunchScreen: { screen: LaunchScreen }
-}, {
-  // Default config for all screens
-  headerMode: 'none',
-  initialRouteName: 'LaunchScreen',
-  navigationOptions: {
-    headerStyle: styles.header
+  {
+    // Default config for all screens
+    headerMode: 'none',
+    initialRouteName: 'ProfileScreen',
+    navigationOptions: {
+      headerStyle: styles.header
+    }
   }
-})
+)
+const AuthStack = createStackNavigator(
+  { SignIn: LaunchScreen },
+  {
+    headerMode: 'none',
+    navigationOptions: {
+      headerStyle: styles.header
+    }
+  }
+)
+
+const PrimaryNav = createSwitchNavigator(
+  {
+    AuthLoading: AuthLoadingScreen,
+    App: AppDrawer,
+    Auth: AuthStack
+  },
+  {
+    initialRouteName: 'AuthLoading'
+  }
+)
 
 export default PrimaryNav

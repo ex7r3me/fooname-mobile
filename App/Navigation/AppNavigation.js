@@ -10,7 +10,6 @@ import LaunchScreen from '../Containers/LaunchScreen'
 import { View, SafeAreaView, Button, AsyncStorage } from 'react-native'
 import React from 'react'
 import styles from './Styles/NavigationStyles'
-import API from '../../App/Services/Api'
 
 const _logout = async () => {
   // todo Add API Call

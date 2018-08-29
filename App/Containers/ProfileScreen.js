@@ -1,26 +1,10 @@
 import React, { Component } from 'react'
-import {
-  Button,
-  Icon,
-  Toast,
-  Container,
-  Header,
-  Content,
-  Text,
-  Right,
-  Left,
-  Body,
-  Title
-} from 'native-base'
-import { AsyncStorage, TextInput } from 'react-native'
+import { Text, AsyncStorage, View } from 'react-native'
 import { withFormik } from 'formik'
 import API from '../../App/Services/Api'
-
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
-
-// Styles
+import { Toolbar, Button } from 'react-native-material-ui'
 import styles from './Styles/ProfileScreenStyle'
+
 let accessToken
 const enhancer = withFormik({
   handleSubmit: (values, actions) => {
@@ -49,7 +33,16 @@ class ProfileScreen extends Component {
       locationButton: false,
       latitude: null,
       longitude: null,
-      error: null
+      error: null,
+      profile: {
+        baseUsername: null,
+        cityId: null,
+        cityName: null,
+        createDate: null,
+        updateDate: null,
+        realm: null,
+        username: null
+      }
     }
   }
   _logout = async () => {
@@ -74,18 +67,23 @@ class ProfileScreen extends Component {
         })
       },
       error => {
-        Toast.show({
-          text: error.message
-        })
+        console.log(error)
         this.setState({ error: error.message, locationButton: false })
       },
       { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
     )
   }
-  saveCoordination = () => {
+  _saveCoordination = async () => {
     let api = API.create()
     const { latitude, longitude } = this.state
-    api.patchByCoordination(latitude, longitude, accessToken)
+    const result = await api.patchByCoordination(
+      latitude,
+      longitude,
+      accessToken
+    )
+    const profile = result.data
+    console.log(profile)
+    this.setState({ profile })
   }
   _storeAccessToken = async accesstoKen => {
     try {
@@ -113,44 +111,32 @@ class ProfileScreen extends Component {
   render () {
     let props = this.props
     return (
-      <Container style={styles}>
-        <Header>
-          <Left>
+      <View>
+        <Toolbar
+          leftElement='menu'
+          onLeftElementPress={element => {
+            props.navigation.openDrawer()
+          }}
+          centerElement='Profile'
+          onRightElementPress={label => {
+            console.log(label)
+          }}
+        />
+        <View>
+          <View style={styles.section}>
+            <Text>{this.state.profile.baseUsername}</Text>
+            <Text>City Name: {this.state.profile.cityName}</Text>
+            <Text>{this.state.credentials}</Text>
             <Button
-              transparent
-              onPress={() => {
-                this.props.navigation.openDrawer()
-              }}
-            >
-              <Icon type='MaterialCommunityIcons' name='menu' />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Profile</Title>
-          </Body>
-          <Right />
-
-        </Header>
-
-        <Content>
-          <Text>Here</Text>
-          <Text>Latitude: {this.state.latitude}</Text>
-          <Text>Longitude: {this.state.longitude}</Text>
-          <Text>{this.state.error}</Text>
-          <Text>User Profile</Text>
-          <Text>{this.state.credentials}</Text>
-          <TextInput
-            onChangeText={props.handleChange('cityId')}
-            onBlur={props.handleBlur('cityId')}
-            value={props.values.cityId}
-          />
-          <Button onPress={props.handleSubmit}><Text>Submit</Text></Button>
-          <Button style={styles.button} onPress={this.saveCoordination}>
-            <Text>Save By Location</Text>
-          </Button>
-          <Button onPress={this._logout}><Text>Logout</Text></Button>
-        </Content>
-      </Container>
+              raised
+              primary
+              style={styles.button}
+              onPress={this._saveCoordination}
+              text='Save By Location'
+            />
+          </View>
+        </View>
+      </View>
     )
   }
 }

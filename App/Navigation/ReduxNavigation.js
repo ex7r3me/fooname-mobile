@@ -2,7 +2,6 @@ import React from 'react'
 import { BackHandler, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import AppNavigation from './AppNavigation'
-import { Root } from 'native-base'
 const prefix = Platform.OS === 'android' ? 'ga.fooname.app://login/' : 'ga.fooname.app://'
 class ReduxNavigation extends React.Component {
   componentWillMount () {
@@ -25,7 +24,7 @@ class ReduxNavigation extends React.Component {
   }
 
   render () {
-    return <Root><AppNavigation uriPrefix={prefix} /></Root>
+    return <AppNavigation uriPrefix={prefix} />
   }
 }
 

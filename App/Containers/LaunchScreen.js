@@ -22,7 +22,7 @@ export default class LaunchScreen extends Component {
           primary
           style={styles.button}
           onPress={() => {
-            Linking.openURL('http://127.0.0.1:8080/api/auth/twitter')
+            Linking.openURL('https://fooname.now.sh/api/auth/twitter')
           }}
           text='Login with Twitter'
         />

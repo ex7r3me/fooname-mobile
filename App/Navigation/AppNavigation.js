@@ -40,7 +40,6 @@ const AppDrawer = createDrawerNavigator(
       </View>
     ),
     headerMode: 'none',
-    initialRouteName: 'ProfileScreen',
     navigationOptions: {
       headerStyle: styles.header
     }
@@ -59,7 +58,10 @@ const AuthStack = createStackNavigator(
 const PrimaryNav = createSwitchNavigator(
   {
     AuthLoading: AuthLoadingScreen,
-    App: AppDrawer,
+    App: {
+      screen: AppDrawer,
+      path: 'user'
+    },
     Auth: AuthStack
   },
   {

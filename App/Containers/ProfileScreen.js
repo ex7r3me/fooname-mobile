@@ -4,7 +4,7 @@ import { withFormik } from 'formik'
 import API from '../../App/Services/Api'
 import { Toolbar, Button } from 'react-native-material-ui'
 import styles from './Styles/ProfileScreenStyle'
-
+import _ from 'lodash'
 let accessToken
 const enhancer = withFormik({
   handleSubmit: (values, actions) => {
@@ -124,8 +124,8 @@ class ProfileScreen extends Component {
         />
         <View>
           <View style={styles.section}>
-            <Text>{this.state.profile.baseUsername}</Text>
-            <Text>City Name: {this.state.profile.cityName}</Text>
+            <Text>{_.get(this.state, 'profile.baseUsername', '')}</Text>
+            <Text>City Name: {_.get(this.state, 'profile.cityName', '')}</Text>
             <Text>{this.state.credentials}</Text>
             <Button
               raised

@@ -2,7 +2,7 @@
 import apisauce from 'apisauce'
 
 // our "constructor"
-const create = (baseURL = 'htts://fooname.now.sh/api/') => {
+const create = (baseURL = 'https://fooname.now.sh/api/') => {
   // ------
   // STEP 1
   // ------

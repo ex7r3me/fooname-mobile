@@ -40,6 +40,7 @@ const create = (baseURL = 'https://fooname.now.sh/api/') => {
   const logout = (accessToken) => api.get(`users/logout?access_token=${accessToken}`)
   const saveCityId = (cityId, accessToken) => api.patch(`/users/me?access_token=${accessToken}`, {cityId})
   const patchByCoordination = (lat, lon, accessToken) => api.patch(`/users/coordination?access_token=${accessToken}`, {lat, lon})
+  const getProfile = (accessToken) => api.get(`/users/me?access_token=${accessToken}`)
 
   // ------
   // STEP 3
@@ -58,6 +59,7 @@ const create = (baseURL = 'https://fooname.now.sh/api/') => {
     getRoot,
     getRate,
     getUser,
+    getProfile,
     saveCityId,
     patchByCoordination,
     logout

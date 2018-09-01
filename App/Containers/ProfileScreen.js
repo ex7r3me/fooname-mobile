@@ -4,6 +4,7 @@ import { withFormik } from 'formik'
 import API from '../../App/Services/Api'
 import { Toolbar, Button } from 'react-native-material-ui'
 import styles from './Styles/ProfileScreenStyle'
+import { Emoji } from 'emoji-mart-native'
 import _ from 'lodash'
 let accessToken
 const enhancer = withFormik({
@@ -23,10 +24,9 @@ class ProfileScreen extends Component {
     const { navigation } = this.props
     const credentials = JSON.stringify(navigation.getParam('credentials'))
     if (credentials) {
-      console.log('cred', credentials)
       this._storeAccessToken(credentials)
     } else {
-      this._retrieveData()
+      this._boot()
     }
     this.state = {
       credentials,
@@ -41,9 +41,14 @@ class ProfileScreen extends Component {
         createDate: null,
         updateDate: null,
         realm: null,
-        username: null
+        username: null,
+        emoji: 'sunny'
       }
     }
+  }
+  _boot = async () => {
+    await this._retrieveData()
+    await this._getProfile()
   }
   _logout = async () => {
     try {
@@ -52,6 +57,16 @@ class ProfileScreen extends Component {
       await AsyncStorage.removeItem('accessToken')
       this._retrieveData()
       this.props.navigation.navigate('Auth')
+    } catch (error) {
+      // Error saving data
+    }
+  }
+  _getProfile = async () => {
+    try {
+      const api = API.create()
+      const result = await api.getProfile(this.state.credentials)
+      const profile = _.get(result, 'data', {})
+      this.setState({ profile })
     } catch (error) {
       // Error saving data
     }
@@ -124,8 +139,24 @@ class ProfileScreen extends Component {
         />
         <View>
           <View style={styles.section}>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <Emoji
+                set={'twitter'}
+                emoji={_.get(this.state, 'profile.emoji', 'sunny')}
+                size={64}
+                fallback={emoji => {
+                  return `:${emoji.short_names[0]}:`
+                }}
+              />
+            </View>
             <Text>{_.get(this.state, 'profile.baseUsername', '')}</Text>
             <Text>City Name: {_.get(this.state, 'profile.cityName', '')}</Text>
+
             <Text>{this.state.credentials}</Text>
             <Button
               raised

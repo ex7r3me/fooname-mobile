@@ -4,6 +4,7 @@ import {
   createDrawerNavigator,
   DrawerItems
 } from 'react-navigation'
+import SettingsScreen from '../Containers/SettingsScreen'
 import AuthLoadingScreen from '../Containers/AuthLoadingScreen'
 import ProfileScreen from '../Containers/ProfileScreen'
 import LaunchScreen from '../Containers/LaunchScreen'
@@ -21,7 +22,8 @@ const AppDrawer = createDrawerNavigator(
     ProfileScreen: {
       screen: ProfileScreen,
       path: 'profile/:credentials'
-    }
+    },
+    SettingsScreen: { screen: SettingsScreen }
   },
   {
     // Default config for all screens

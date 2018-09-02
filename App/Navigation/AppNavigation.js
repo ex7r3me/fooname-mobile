@@ -16,7 +16,7 @@ const _logout = async () => {
   // todo Add API Call
   await AsyncStorage.removeItem('accessToken')
 }
-
+const visibleDrawerItems = ['Login']
 const AppDrawer = createDrawerNavigator(
   {
     ProfileScreen: {
@@ -27,20 +27,29 @@ const AppDrawer = createDrawerNavigator(
   },
   {
     // Default config for all screens
-    contentComponent: props => (
-      <View style={{ flex: 1 }}>
-        <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-          <DrawerItems {...props} />
-          <Button
-            title='Logout'
-            onPress={() => {
-              _logout()
-              props.navigation.navigate('Auth')
-            }}
-          />
-        </SafeAreaView>
-      </View>
-    ),
+    contentComponent: props => {
+      const clonedProps = {
+        ...props,
+        items: props.items.filter(item =>
+          visibleDrawerItems.includes(item.key)
+        )
+      }
+      return (
+        <View style={{ flex: 1 }}>
+          <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
+            <DrawerItems {...clonedProps} />
+            <Button
+              title='Logout'
+              onPress={() => {
+                _logout()
+                props.navigation.navigate('Auth')
+              }}
+            />
+          </SafeAreaView>
+        </View>
+      )
+    },
+
     headerMode: 'none',
     navigationOptions: {
       headerStyle: styles.header

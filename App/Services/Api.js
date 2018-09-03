@@ -2,7 +2,10 @@
 import apisauce from 'apisauce'
 
 // our "constructor"
-const create = (baseURL = 'https://fooname.now.sh/api/') => {
+export const baseURL = __DEV__
+  ? 'http://127.0.0.1:8080/api/'
+  : 'https://fooname.now.sh/api/'
+const create = () => {
   // ------
   // STEP 1
   // ------

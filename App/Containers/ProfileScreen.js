@@ -5,6 +5,7 @@ import API from '../../App/Services/Api'
 import { Toolbar, Button } from 'react-native-material-ui'
 import styles from './Styles/ProfileScreenStyle'
 import { Emoji } from 'emoji-mart-native'
+
 import _ from 'lodash'
 let accessToken
 const enhancer = withFormik({
@@ -165,7 +166,16 @@ class ProfileScreen extends Component {
               onPress={this._saveCoordination}
               text='Save By Location'
             />
+            <Button
+              raised
+              accent
+              text='Emoji Selector'
+              onPress={() => {
+                this.props.navigation.navigate('EmojiSelectorScreen')
+              }}
+            />
           </View>
+
         </View>
       </View>
     )

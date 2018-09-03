@@ -4,6 +4,7 @@ import {
   createDrawerNavigator,
   DrawerItems
 } from 'react-navigation'
+import EmojiSelectorScreen from '../Containers/EmojiSelectorScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
 import AuthLoadingScreen from '../Containers/AuthLoadingScreen'
 import ProfileScreen from '../Containers/ProfileScreen'
@@ -16,28 +17,22 @@ const _logout = async () => {
   // todo Add API Call
   await AsyncStorage.removeItem('accessToken')
 }
-const visibleDrawerItems = ['Login']
 const AppDrawer = createDrawerNavigator(
   {
     ProfileScreen: {
       screen: ProfileScreen,
       path: 'profile/:credentials'
     },
+    EmojiSelectorScreen: { screen: EmojiSelectorScreen },
     SettingsScreen: { screen: SettingsScreen }
   },
   {
     // Default config for all screens
     contentComponent: props => {
-      const clonedProps = {
-        ...props,
-        items: props.items.filter(item =>
-          visibleDrawerItems.includes(item.key)
-        )
-      }
       return (
         <View style={{ flex: 1 }}>
           <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
-            <DrawerItems {...clonedProps} />
+            <DrawerItems {...props} />
             <Button
               title='Logout'
               onPress={() => {
@@ -49,7 +44,7 @@ const AppDrawer = createDrawerNavigator(
         </View>
       )
     },
-
+    initialRouteName: 'ProfileScreen',
     headerMode: 'none',
     navigationOptions: {
       headerStyle: styles.header

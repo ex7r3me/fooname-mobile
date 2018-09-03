@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, Linking, View } from 'react-native'
 import { Button } from 'react-native-material-ui'
 import styles from './Styles/LaunchScreenStyles'
-
+import { baseURL } from '../Services/Api'
 export default class LaunchScreen extends Component {
   static navigationOptions = {
     drawerLabel: 'Home'
@@ -22,7 +22,7 @@ export default class LaunchScreen extends Component {
           primary
           style={styles.button}
           onPress={() => {
-            Linking.openURL('https://fooname.now.sh/api/auth/twitter')
+            Linking.openURL(`${baseURL}auth/twitter`)
           }}
           text='Login with Twitter'
         />

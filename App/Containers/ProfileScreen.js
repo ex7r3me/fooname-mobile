@@ -4,7 +4,7 @@ import { withFormik } from 'formik'
 import API from '../../App/Services/Api'
 import { Toolbar, Button } from 'react-native-material-ui'
 import styles from './Styles/ProfileScreenStyle'
-import { Emoji } from 'emoji-mart-native'
+import { Emoji, Picker } from 'emoji-mart-native'
 
 import _ from 'lodash'
 let accessToken
@@ -30,6 +30,7 @@ class ProfileScreen extends Component {
       this._boot()
     }
     this.state = {
+      showEmojiPicker: false,
       credentials,
       locationButton: false,
       latitude: null,
@@ -126,8 +127,19 @@ class ProfileScreen extends Component {
 
   render () {
     let props = this.props
+    let EmojiPicker = null
+    if (this.state.showEmojiPicker) {
+      EmojiPicker = (
+        <Picker
+          onPressClose={() => this.setState({ showEmojiPicker: false })}
+          set='twitter'
+          onSelect={this.addEmoji}
+        />
+      )
+    }
+
     return (
-      <View>
+      <View style={styles.mainContainer}>
         <Toolbar
           leftElement='menu'
           onLeftElementPress={element => {
@@ -157,7 +169,6 @@ class ProfileScreen extends Component {
             </View>
             <Text>{_.get(this.state, 'profile.baseUsername', '')}</Text>
             <Text>City Name: {_.get(this.state, 'profile.cityName', '')}</Text>
-
             <Text>{this.state.credentials}</Text>
             <Button
               raised
@@ -171,12 +182,13 @@ class ProfileScreen extends Component {
               accent
               text='Emoji Selector'
               onPress={() => {
-                this.props.navigation.navigate('EmojiSelectorScreen')
+                this.setState({ showEmojiPicker: true })
+                // this.props.navigation.navigate('EmojiSelectorScreen')
               }}
             />
           </View>
-
         </View>
+        {EmojiPicker}
       </View>
     )
   }

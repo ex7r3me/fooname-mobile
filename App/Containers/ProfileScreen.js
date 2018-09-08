@@ -90,6 +90,13 @@ class ProfileScreen extends Component {
       { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
     )
   }
+  addEmoji = async emojiObj => {
+    let emoji = emojiObj.id
+    let api = API.create()
+    const result = await api.patchEmoji(emoji, accessToken)
+    const profile = result.data
+    this.setState({ profile, showEmojiPicker: false })
+  }
   _saveCoordination = async () => {
     let api = API.create()
     const { latitude, longitude } = this.state
@@ -150,6 +157,8 @@ class ProfileScreen extends Component {
             console.log(label)
           }}
         />
+        {EmojiPicker}
+
         <View>
           <View style={styles.section}>
             <View
@@ -188,7 +197,6 @@ class ProfileScreen extends Component {
             />
           </View>
         </View>
-        {EmojiPicker}
       </View>
     )
   }

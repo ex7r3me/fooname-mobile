@@ -4,7 +4,6 @@ import {
   createDrawerNavigator,
   DrawerItems
 } from 'react-navigation'
-import EmojiSelectorScreen from '../Containers/EmojiSelectorScreen'
 import SettingsScreen from '../Containers/SettingsScreen'
 import AuthLoadingScreen from '../Containers/AuthLoadingScreen'
 import ProfileScreen from '../Containers/ProfileScreen'
@@ -23,7 +22,6 @@ const AppDrawer = createDrawerNavigator(
       screen: ProfileScreen,
       path: 'profile/:credentials'
     },
-    EmojiSelectorScreen: { screen: EmojiSelectorScreen },
     SettingsScreen: { screen: SettingsScreen }
   },
   {

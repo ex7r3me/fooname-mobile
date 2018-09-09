@@ -178,7 +178,6 @@ class ProfileScreen extends Component {
             </View>
             <Text>{_.get(this.state, 'profile.baseUsername', '')}</Text>
             <Text>City Name: {_.get(this.state, 'profile.cityName', '')}</Text>
-            <Text>{this.state.credentials}</Text>
             <Button
               raised
               primary

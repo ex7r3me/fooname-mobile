@@ -47,7 +47,7 @@ const create = () => {
   const patchByCoordination = (lat, lon, accessToken) =>
     api.patch(`/users/coordination?access_token=${accessToken}`, { lat, lon })
   const patchEmoji = (emoji, accessToken) =>
-    api.patch(`/users/me?access_token=${accessToken}`, { emoji })
+    api.patch(`/users/me?access_token=${accessToken}`, { emoji, autoUpdate: false })
   const getProfile = accessToken =>
     api.get(`/users/me?access_token=${accessToken}`)
 

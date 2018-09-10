@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, AsyncStorage, View } from 'react-native'
+import { Text, AsyncStorage, View, Image } from 'react-native'
 import { withFormik } from 'formik'
 import API from '../../App/Services/Api'
 import { Toolbar, Button } from 'react-native-material-ui'
@@ -167,9 +167,13 @@ class ProfileScreen extends Component {
                 alignItems: 'center'
               }}
             >
+              <Image
+                style={{width: 64, height: 64}}
+                source={{uri: _.get(this.state, 'profile.profileImage')}} />
+
               <Emoji
                 set={'twitter'}
-                emoji={_.get(this.state, 'profile.emoji', 'sunny')}
+                emoji={_.get(this.state, 'profile.emoji') || 'sunny'}
                 size={64}
                 fallback={emoji => {
                   return `:${emoji.short_names[0]}:`

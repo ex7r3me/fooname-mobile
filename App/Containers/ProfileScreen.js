@@ -1,20 +1,13 @@
 import React, { Component } from 'react'
 import { Text, AsyncStorage, View, Image } from 'react-native'
-import { withFormik } from 'formik'
 import API from '../../App/Services/Api'
 import { Toolbar, Button } from 'react-native-material-ui'
 import styles from './Styles/ProfileScreenStyle'
 import { Emoji, Picker } from 'emoji-mart-native'
-
+import UserActions from '../Redux/UserRedux'
+import { connect } from 'react-redux'
 import _ from 'lodash'
 let accessToken
-const enhancer = withFormik({
-  handleSubmit: (values, actions) => {
-    let api = API.create()
-    const cityId = values.cityId
-    api.saveCityId(cityId, accessToken)
-  }
-})
 
 class ProfileScreen extends Component {
   static navigationOptions = {
@@ -198,6 +191,14 @@ class ProfileScreen extends Component {
                 // this.props.navigation.navigate('EmojiSelectorScreen')
               }}
             />
+            <Button
+              raised
+              primary
+              text='get profile'
+              onPress={() => {
+                this.props.getProfile()
+              }}
+            />
           </View>
         </View>
       </View>
@@ -205,4 +206,11 @@ class ProfileScreen extends Component {
   }
 }
 
-export default enhancer(ProfileScreen)
+const mapStateToProps = state => {
+  return {}
+}
+const mapDispatchToProps = (dispatch) => ({
+  getProfile: () => dispatch(UserActions.profileRequest())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen)

@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
 import {
-  ScrollView,
-  Text,
-  KeyboardAvoidingView,
-  AsyncStorage,
   ActivityIndicator,
   View,
   StatusBar
 } from 'react-native'
 import { connect } from 'react-redux'
+import AuthActions from '../Redux/AuthRedux'
+
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
 
@@ -18,13 +16,12 @@ import styles from './Styles/AuthLoadingScreenStyle'
 class AuthLoadingScreen extends Component {
   constructor (props) {
     super(props)
-    this._bootstrapAsync()
+    this.props.getAccessToken()
   }
-  _bootstrapAsync = async () => {
-    const accessToken = await AsyncStorage.getItem('accessToken')
-    // This will switch to the App screen or Auth screen and this loading
-    // screen will be unmounted and thrown away.
-    this.props.navigation.navigate(accessToken ? 'App' : 'Auth')
+  componentDidUpdate () {
+    if (this.props.fetching === false) {
+      this.props.navigation.navigate(this.props.accessToken ? 'App' : 'Auth')
+    }
   }
 
   render () {
@@ -38,11 +35,16 @@ class AuthLoadingScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  return {}
+  return {
+    accessToken: state.auth.accessToken,
+    fetching: state.auth.fetching
+  }
 }
 
 const mapDispatchToProps = dispatch => {
-  return {}
+  return {
+    getAccessToken: () => dispatch(AuthActions.authRequest())
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthLoadingScreen)

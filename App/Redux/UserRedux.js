@@ -18,7 +18,8 @@ export const INITIAL_STATE = Immutable({
   updateDate: null,
   realm: null,
   username: null,
-  emoji: 'sunny'
+  emoji: 'sunny',
+  accessToken: null
 })
 
 export const request = (state) =>

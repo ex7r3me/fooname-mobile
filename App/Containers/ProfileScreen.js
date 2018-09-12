@@ -28,17 +28,7 @@ class ProfileScreen extends Component {
       locationButton: false,
       latitude: null,
       longitude: null,
-      error: null,
-      profile: {
-        baseUsername: null,
-        cityId: null,
-        cityName: null,
-        createDate: null,
-        updateDate: null,
-        realm: null,
-        username: null,
-        emoji: 'sunny'
-      }
+      error: null
     }
   }
   _boot = async () => {
@@ -162,19 +152,19 @@ class ProfileScreen extends Component {
             >
               <Image
                 style={{width: 64, height: 64}}
-                source={{uri: _.get(this.state, 'profile.profileImage')}} />
+                source={{uri: _.get(this.props, 'profile.profileImage')}} />
 
               <Emoji
                 set={'twitter'}
-                emoji={_.get(this.state, 'profile.emoji') || 'sunny'}
+                emoji={_.get(this.props, 'profile.emoji') || 'sunny'}
                 size={64}
                 fallback={emoji => {
                   return `:${emoji.short_names[0]}:`
                 }}
               />
             </View>
-            <Text>{_.get(this.state, 'profile.baseUsername', '')}</Text>
-            <Text>City Name: {_.get(this.state, 'profile.cityName', '')}</Text>
+            <Text>{_.get(this.props, 'profile.baseUsername', '')}</Text>
+            <Text>City Name: {_.get(this.props, 'profile.cityName', '')}</Text>
             <Button
               raised
               primary
@@ -207,7 +197,19 @@ class ProfileScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  return {}
+  const user = state.user
+  return {
+    profile: {
+      baseUsername: user.baseUsername,
+      cityId: user.cityId,
+      cityName: user.cityName,
+      createDate: user.createDate,
+      updateDate: user.updateDate,
+      realm: user.realm,
+      username: user.username,
+      emoji: user.emoji
+    }
+  }
 }
 const mapDispatchToProps = (dispatch) => ({
   getProfile: () => dispatch(UserActions.profileRequest())

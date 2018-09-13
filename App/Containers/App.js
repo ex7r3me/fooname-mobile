@@ -5,8 +5,9 @@ import { Provider } from 'react-redux'
 import RootContainer from './RootContainer'
 import createStore from '../Redux'
 import OneSignal from 'react-native-onesignal'
+import { PersistGate } from 'redux-persist/integration/react'
 // create our store
-const store = createStore()
+const { store, persistor } = createStore()
 
 /**
  * Provides an entry point into our application.  Both index.ios.js and index.android.js
@@ -19,7 +20,7 @@ const store = createStore()
  */
 class App extends Component {
   componentWillMount () {
-    OneSignal.init('c73a4b11-2efe-49e4-9859-f35ec3328b28')
+   // OneSignal.init('c73a4b11-2efe-49e4-9859-f35ec3328b28')
 
     OneSignal.addEventListener('received', this.onReceived)
     OneSignal.addEventListener('opened', this.onOpened)
@@ -49,7 +50,9 @@ class App extends Component {
   render () {
     return (
       <Provider store={store}>
-        <RootContainer />
+        <PersistGate loading={null} persistor={persistor}>
+          <RootContainer />
+        </PersistGate>
       </Provider>
     )
   }

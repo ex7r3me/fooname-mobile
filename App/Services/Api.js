@@ -37,18 +37,22 @@ const create = () => {
   // Since we can't hide from that, we embrace it by getting out of the
   // way at this level.
   //
+  let accessToken = null
+  const setAccessToken = (newAccessToken) => { accessToken = newAccessToken }
+  const removeAccessToken = () => { accessToken = null }
+
   const getRoot = () => api.get('')
   const getRate = () => api.get('rate_limit')
   const getUser = username => api.get('search/users', { q: username })
-  const logout = accessToken =>
+  const logout = () =>
     api.get(`users/logout?access_token=${accessToken}`)
-  const saveCityId = (cityId, accessToken) =>
+  const saveCityId = (cityId) =>
     api.patch(`/users/me?access_token=${accessToken}`, { cityId })
-  const patchByCoordination = (lat, lon, accessToken) =>
+  const patchByCoordination = (lat, lon) =>
     api.patch(`/users/coordination?access_token=${accessToken}`, { lat, lon })
-  const patchEmoji = (emoji, accessToken) =>
+  const patchEmoji = (emoji) =>
     api.patch(`/users/me?access_token=${accessToken}`, { emoji, autoUpdate: false })
-  const getProfile = accessToken =>
+  const getProfile = () =>
     api.get(`/users/me?access_token=${accessToken}`)
 
   // ------
@@ -65,6 +69,8 @@ const create = () => {
   //
   return {
     // a list of the API functions from step 2
+    setAccessToken,
+    removeAccessToken,
     getRoot,
     getRate,
     getUser,

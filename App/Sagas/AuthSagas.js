@@ -1,33 +1,26 @@
-/* ***********************************************************
-* A short word on how to use this automagically generated file.
-* We're often asked in the ignite gitter channel how to connect
-* to a to a third party api, so we thought we'd demonstrate - but
-* you should know you can use sagas for other flow control too.
-*
-* Other points:
-*  - You'll need to add this saga to sagas/index.js
-*  - This template uses the api declared in sagas/index.js, so
-*    you'll need to define a constant in that file.
-*************************************************************/
-
-import { put } from 'redux-saga/effects'
-import { AsyncStorage } from 'react-native'
-import AuthActions from '../Redux/AuthRedux'
-import { NavigationActions } from 'react-navigation'
-// import { AuthSelectors } from '../Redux/AuthRedux'
+import { call, select } from 'redux-saga/effects'
+import AuthActions, {AuthSelectors} from '../Redux/AuthRedux'
+import NavigationService from '../Services/NavigationService'
 
 export function * getAuth (api, action) {
-  // const { data } = action
-  // get current data from Store
-  // const currentData = yield select(AuthSelectors.getData)
-  // make the call to the api
-  const accessToken = yield AsyncStorage.getItem('accessToken')
-  // success?
-  if (accessToken) {
-    // You might need to change the response here - do this with a 'transform',
-    // located in ../Transforms/. Otherwise, just pass the data back from the api.
-    yield put(AuthActions.authSuccess(accessToken))
-  } else {
-    yield put(AuthActions.authFailure())
+  try {
+    const currentData = yield select(AuthSelectors.getData)
+
+    if (currentData.accessToken) {
+      yield call(NavigationService.navigate, 'App')
+      yield call(api.setAccessToken, currentData.accessToken)
+    } else {
+      yield call(NavigationService.navigate, 'Auth')
+    }
+  } catch (e) { console.log(e) }
+}
+export function * logout (api, action) {
+  try {
+    yield call(api.logout)
+    yield call(NavigationService.navigate, 'Auth')
+    yield call(AuthActions.authSuccess, null)
+    yield call(api.removeAccessToken)
+  } catch (e) {
+    console.log(e)
   }
 }

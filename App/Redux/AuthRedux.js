@@ -6,7 +6,8 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   authRequest: ['data'],
   authSuccess: ['accessToken'],
-  authFailure: null
+  authFailure: null,
+  logout: null
 })
 
 export const AuthTypes = Types
@@ -23,14 +24,16 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const AuthSelectors = {
-  getData: state => state.data
+  getData: state => {
+    return state.auth
+  }
 }
 
 /* ------------- Reducers ------------- */
 
 // request the data from an api
 export const request = (state, { data }) =>
-  state.merge({ fetching: true, data, payload: null })
+  state.merge({ fetching: true })
 
 // successful api lookup
 export const success = (state, action) => {

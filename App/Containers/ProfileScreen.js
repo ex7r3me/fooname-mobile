@@ -5,6 +5,7 @@ import { Toolbar, Button } from 'react-native-material-ui'
 import styles from './Styles/ProfileScreenStyle'
 import { Emoji, Picker } from 'emoji-mart-native'
 import UserActions from '../Redux/UserRedux'
+import AuthActions from '../Redux/AuthRedux'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 let accessToken
@@ -16,11 +17,11 @@ class ProfileScreen extends Component {
   constructor (props) {
     super(props)
     const { navigation } = this.props
-    const credentials = JSON.stringify(navigation.getParam('credentials'))
+    const credentials = navigation.getParam('credentials')
     if (credentials) {
-      this._storeAccessToken(credentials)
+      this.props.setAccessToken(credentials)
     } else {
-      this._boot()
+      // this._boot()
     }
     this.state = {
       showEmojiPicker: false,
@@ -89,16 +90,9 @@ class ProfileScreen extends Component {
       accessToken
     )
     const profile = result.data
-    console.log(profile)
     this.setState({ profile })
   }
-  _storeAccessToken = async accesstoKen => {
-    try {
-      await AsyncStorage.setItem('accessToken', accesstoKen)
-    } catch (error) {
-      // Error saving data
-    }
-  }
+
   _retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('accessToken')
@@ -212,7 +206,8 @@ const mapStateToProps = state => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  getProfile: () => dispatch(UserActions.profileRequest())
+  getProfile: () => dispatch(UserActions.profileRequest()),
+  setAccessToken: (accessToken) => dispatch(AuthActions.authSuccess(accessToken))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen)

@@ -1,32 +1,30 @@
 import React from 'react'
-import { BackHandler, Platform } from 'react-native'
-import { connect } from 'react-redux'
+import { Platform } from 'react-native'
 import AppNavigation from './AppNavigation'
+import NavigationService from '../Services/NavigationService'
+import { connect } from 'react-redux'
+import AuthActions from '../Redux/AuthRedux'
+
 const prefix = Platform.OS === 'android' ? 'ga.fooname.app://login/' : 'ga.fooname.app://'
+
 class ReduxNavigation extends React.Component {
-  componentWillMount () {
-    if (Platform.OS === 'ios') return
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      const { dispatch, nav } = this.props
-      // change to whatever is your first screen, otherwise unpredictable results may occur
-      if (nav.routes.length === 1 && (nav.routes[0].routeName === 'LaunchScreen')) {
-        return false
-      }
-      // if (shouldCloseApp(nav)) return false
-      dispatch({ type: 'Navigation/BACK' })
-      return true
-    })
+  componentDidMount () {
+    NavigationService.setTopLevelNavigator(this._input)
+    this.props.getAccessToken()
   }
-
-  componentWillUnmount () {
-    if (Platform.OS === 'ios') return
-    BackHandler.removeEventListener('hardwareBackPress')
-  }
-
   render () {
-    return <AppNavigation uriPrefix={prefix} />
+    return <AppNavigation
+      screenProps={{
+        logout: this.props.logout
+      }}
+      ref={(c) => { this._input = c }}
+      uriPrefix={prefix}
+      />
   }
 }
+const mapDispatchToProps = (dispatch) => ({
+  getAccessToken: () => dispatch(AuthActions.authRequest()),
+  logout: () => dispatch(AuthActions.logout())
+})
 
-const mapStateToProps = state => ({ nav: state.nav })
-export default connect(mapStateToProps)(ReduxNavigation)
+export default connect(null, mapDispatchToProps)(ReduxNavigation)

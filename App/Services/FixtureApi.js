@@ -20,5 +20,9 @@ export default {
       ok: true,
       data: username.toLowerCase() === 'gantman' ? gantmanData : skellockData
     }
-  }
+  },
+  setAccessToken: () => {},
+  removeAccessToken: () => {},
+  logout: () => {}
+
 }

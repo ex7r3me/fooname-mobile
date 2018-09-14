@@ -90,7 +90,8 @@
     "setupFiles": [
       "<rootDir>/Tests/Setup"
     ],
-    "preset": "react-native"
+    "preset": "react-native",
+    "collectCoverage": true
   },
   "config": {},
   "standard": {

@@ -10,6 +10,7 @@
     "list": "ignite-ir-boilerplate-andross",
     "redux": "ignite-ir-boilerplate-andross",
     "saga": "ignite-ir-boilerplate-andross",
-    "screen": "ignite-ir-boilerplate-andross"
+    "screen": "ignite-ir-boilerplate-andross",
+    "test": "jest"
   }
 }

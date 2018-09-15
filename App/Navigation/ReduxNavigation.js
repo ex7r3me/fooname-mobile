@@ -14,17 +14,23 @@ class ReduxNavigation extends React.Component {
   }
   render () {
     return <AppNavigation
+      user={this.props.user}
       screenProps={{
-        logout: this.props.logout
+        logout: this.props.logout,
+        user: this.props.user
       }}
       ref={(c) => { this._input = c }}
       uriPrefix={prefix}
       />
   }
 }
+const mapStateToProps = state => {
+  const user = state.user
+  return { user }
+}
 const mapDispatchToProps = (dispatch) => ({
   getAccessToken: () => dispatch(AuthActions.authRequest()),
   logout: () => dispatch(AuthActions.logout())
 })
 
-export default connect(null, mapDispatchToProps)(ReduxNavigation)
+export default connect(mapStateToProps, mapDispatchToProps)(ReduxNavigation)

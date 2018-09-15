@@ -8,15 +8,10 @@ import SettingsScreen from '../Containers/SettingsScreen'
 import AuthLoadingScreen from '../Containers/AuthLoadingScreen'
 import ProfileScreen from '../Containers/ProfileScreen'
 import LaunchScreen from '../Containers/LaunchScreen'
-import { View, SafeAreaView, Button, AsyncStorage } from 'react-native'
+import DrawerHeader from '../Components/DrawerHeader'
+import { View, SafeAreaView, Button } from 'react-native'
 import React from 'react'
-import { connect } from 'react-redux'
-import AuthActions from '../Sagas/AuthSagas'
 import styles from './Styles/NavigationStyles'
-const _logout = async () => {
-  // todo Add API Call
-  await AsyncStorage.removeItem('accessToken')
-}
 const AppDrawer = createDrawerNavigator(
   {
     ProfileScreen: {
@@ -31,6 +26,11 @@ const AppDrawer = createDrawerNavigator(
       return (
         <View style={{ flex: 1 }}>
           <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
+            <DrawerHeader
+              bannerImage={props.screenProps.user.bannerImage}
+              profileImage={props.screenProps.user.profileImage}
+              name={props.screenProps.user.baseUsername}
+            />
             <DrawerItems {...props} />
             <Button
               title='Logout'

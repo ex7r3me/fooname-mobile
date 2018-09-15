@@ -23,6 +23,12 @@ export default {
   },
   setAccessToken: () => {},
   removeAccessToken: () => {},
-  logout: () => {}
-
+  logout: () => {},
+  patchProfile: () => {
+    const testUserData = require('../Fixtures/gantman.json')
+    return {
+      ok: true,
+      data: testUserData
+    }
+  }
 }

@@ -60,3 +60,6 @@ buck-out/
 .env
 metro*
 haste-map*
+coverage.data
+coverage/
+coverage/*

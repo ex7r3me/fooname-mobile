@@ -25,7 +25,7 @@ test('failure', () => {
   expect(state.accessToken).toBeNull()
 })
 
-test('selector',() => {
+test('selector', () => {
   const accessToken = 'TEST_ACCESS_TOKEN'
   const state = AuthSelectors.getData({auth: {accessToken}})
 

@@ -54,6 +54,8 @@ const create = () => {
     api.patch(`/users/me?access_token=${accessToken}`, { emoji, autoUpdate: false })
   const getProfile = () =>
     api.get(`/users/me?access_token=${accessToken}`)
+  const patchProfile = (profile) =>
+      api.patch(`/users/me?access_token=${accessToken}`, { ...profile })
 
   // ------
   // STEP 3
@@ -75,6 +77,7 @@ const create = () => {
     getRate,
     getUser,
     getProfile,
+    patchProfile,
     saveCityId,
     patchByCoordination,
     patchEmoji,

@@ -9,6 +9,7 @@ import { StartupTypes } from '../Redux/StartupRedux'
 import { GithubTypes } from '../Redux/GithubRedux'
 import { UserTypes } from '../Redux/UserRedux'
 import { AuthTypes } from '../Redux/AuthRedux'
+import { UpdateUserTypes } from '../Redux/UpdateUserRedux'
 
 /* ------------- Sagas ------------- */
 
@@ -16,6 +17,7 @@ import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
 import { getUserProfile } from './UserSagas'
 import { getAuth, logout } from './AuthSagas'
+import { patchUserProfile } from './UpdateUserSagas'
 
 /* ------------- API ------------- */
 
@@ -32,6 +34,7 @@ export default function * root () {
     takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api),
     takeLatest(UserTypes.PROFILE_REQUEST, getUserProfile, api),
     takeLatest(AuthTypes.AUTH_REQUEST, getAuth, api),
-    takeLatest(AuthTypes.LOGOUT, logout, api)
+    takeLatest(AuthTypes.LOGOUT, logout, api),
+    takeLatest(UpdateUserTypes.UPDATE_USER_REQUEST, patchUserProfile, api)
   ])
 }

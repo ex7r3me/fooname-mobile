@@ -19,21 +19,20 @@ export const INITIAL_STATE = Immutable({
   realm: null,
   username: null,
   emoji: 'sunny',
-  accessToken: null
+  accessToken: null,
+  profileImage: null,
+  bannerImage: null
 })
 
 export const request = (state) =>
   state.merge({ fetching: true })
 
-// successful avatar lookup
 export const success = (state, action) => {
   const { profile } = action
   return state.merge({ fetching: false, error: null, ...profile })
 }
-
-// failed to get the avatar
 export const failure = (state) =>
-  state.merge({ fetching: false, error: true })
+  state.merge({ fetching: false, error: true, profile: INITIAL_STATE })
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.PROFILE_REQUEST]: request,

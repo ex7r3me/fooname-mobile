@@ -1,0 +1,13 @@
+{
+    "baseUsername":"my username",
+    "cityId":"123456",
+    "cityName":"New York",
+    "createDate":null,
+    "updateDate":null,
+    "realm":null,
+    "username":"something@fooname.ga",
+    "emoji":"sunny",
+    "accessToken":"TEST_ACCESS_TOKEN",
+    "profileImage":"https://fooname.ga/profile-image.jpg",
+    "bannerImage":"https://fooname.ga/banner-image.jpg"
+}

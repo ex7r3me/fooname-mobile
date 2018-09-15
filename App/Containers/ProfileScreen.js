@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import { Text, AsyncStorage, View, Image } from 'react-native'
+import { Text, View, Image } from 'react-native'
 import API from '../../App/Services/Api'
 import { Toolbar, Button } from 'react-native-material-ui'
 import styles from './Styles/ProfileScreenStyle'
 import { Emoji, Picker } from 'emoji-mart-native'
 import UserActions from '../Redux/UserRedux'
+import UpdateUserActions from '../Redux/UpdateUserRedux'
 import AuthActions from '../Redux/AuthRedux'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-let accessToken
 
 class ProfileScreen extends Component {
   static navigationOptions = {
@@ -20,8 +20,6 @@ class ProfileScreen extends Component {
     const credentials = navigation.getParam('credentials')
     if (credentials) {
       this.props.setAccessToken(credentials)
-    } else {
-      // this._boot()
     }
     this.state = {
       showEmojiPicker: false,
@@ -30,31 +28,6 @@ class ProfileScreen extends Component {
       latitude: null,
       longitude: null,
       error: null
-    }
-  }
-  _boot = async () => {
-    await this._retrieveData()
-    await this._getProfile()
-  }
-  _logout = async () => {
-    try {
-      let api = API.create()
-      await api.logout(this.state.credentials)
-      await AsyncStorage.removeItem('accessToken')
-      this._retrieveData()
-      this.props.navigation.navigate('Auth')
-    } catch (error) {
-      // Error saving data
-    }
-  }
-  _getProfile = async () => {
-    try {
-      const api = API.create()
-      const result = await api.getProfile(this.state.credentials)
-      const profile = _.get(result, 'data', {})
-      this.setState({ profile })
-    } catch (error) {
-      // Error saving data
     }
   }
   componentDidMount () {
@@ -74,39 +47,14 @@ class ProfileScreen extends Component {
       { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
     )
   }
-  addEmoji = async emojiObj => {
-    let emoji = emojiObj.id
-    let api = API.create()
-    const result = await api.patchEmoji(emoji, accessToken)
-    const profile = result.data
-    this.setState({ profile, showEmojiPicker: false })
+  addEmoji = (emojiObj) => {
+    const emoji = emojiObj.id
+    this.props.saveProfile({emoji})
+    this.setState({showEmojiPicker: false})
   }
   _saveCoordination = async () => {
     let api = API.create()
     const { latitude, longitude } = this.state
-    const result = await api.patchByCoordination(
-      latitude,
-      longitude,
-      accessToken
-    )
-    const profile = result.data
-    this.setState({ profile })
-  }
-
-  _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('accessToken')
-      if (value !== null) {
-        // We have data!!
-        let credentials = value.replace(/['"]+/g, '')
-        this.setState({ credentials })
-        accessToken = credentials
-      } else {
-        this.setState({ credentials: null })
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
   }
 
   render () {
@@ -206,6 +154,7 @@ const mapStateToProps = state => {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
+  saveProfile: (profile) => dispatch(UpdateUserActions.updateUserRequest(profile)),
   getProfile: () => dispatch(UserActions.profileRequest()),
   setAccessToken: (accessToken) => dispatch(AuthActions.authSuccess(accessToken))
 })

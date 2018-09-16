@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Text, View, Image } from 'react-native'
-import API from '../../App/Services/Api'
 import { Toolbar, Button } from 'react-native-material-ui'
 import styles from './Styles/ProfileScreenStyle'
 import { Emoji, Picker } from 'emoji-mart-native'
@@ -16,49 +15,24 @@ class ProfileScreen extends Component {
   }
   constructor (props) {
     super(props)
-    const { navigation } = this.props
-    const credentials = navigation.getParam('credentials')
+    const credentials = this.props.navigation.getParam('credentials')
     if (credentials) {
       this.props.setAccessToken(credentials)
     }
     this.state = {
-      showEmojiPicker: false,
-      credentials,
-      locationButton: false,
-      latitude: null,
-      longitude: null,
-      error: null
+      showEmojiPicker: false
     }
   }
   componentDidMount () {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          locationButton: true,
-          error: null
-        })
-      },
-      error => {
-        console.log(error)
-        this.setState({ error: error.message, locationButton: false })
-      },
-      { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
-    )
+
   }
   addEmoji = (emojiObj) => {
     const emoji = emojiObj.id
     this.props.saveProfile({emoji})
     this.setState({showEmojiPicker: false})
   }
-  _saveCoordination = async () => {
-    let api = API.create()
-    const { latitude, longitude } = this.state
-  }
-
   render () {
-    let props = this.props
+    console.log(this.props)
     let EmojiPicker = null
     if (this.state.showEmojiPicker) {
       EmojiPicker = (
@@ -69,13 +43,13 @@ class ProfileScreen extends Component {
         />
       )
     }
-
+  
     return (
       <View style={styles.mainContainer}>
         <Toolbar
           leftElement='menu'
           onLeftElementPress={element => {
-            props.navigation.openDrawer()
+            this.props.navigation.openDrawer()
           }}
           centerElement='Profile'
           onRightElementPress={label => {
@@ -83,7 +57,6 @@ class ProfileScreen extends Component {
           }}
         />
         {EmojiPicker}
-
         <View>
           <View style={styles.section}>
             <View
@@ -110,8 +83,8 @@ class ProfileScreen extends Component {
             <Button
               raised
               primary
+              disabled={!this.props.hasLocation}
               style={styles.button}
-              onPress={this._saveCoordination}
               text='Save By Location'
             />
             <Button
@@ -120,15 +93,6 @@ class ProfileScreen extends Component {
               text='Emoji Selector'
               onPress={() => {
                 this.setState({ showEmojiPicker: true })
-                // this.props.navigation.navigate('EmojiSelectorScreen')
-              }}
-            />
-            <Button
-              raised
-              primary
-              text='get profile'
-              onPress={() => {
-                this.props.getProfile()
               }}
             />
           </View>
@@ -140,6 +104,7 @@ class ProfileScreen extends Component {
 
 const mapStateToProps = state => {
   const user = state.user
+  const location = state.location
   return {
     profile: {
       baseUsername: user.baseUsername,
@@ -150,7 +115,8 @@ const mapStateToProps = state => {
       realm: user.realm,
       username: user.username,
       emoji: user.emoji
-    }
+    },
+    hasLocation: location.hasLocation
   }
 }
 const mapDispatchToProps = (dispatch) => ({

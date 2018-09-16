@@ -4,6 +4,7 @@ import AppNavigation from './AppNavigation'
 import NavigationService from '../Services/NavigationService'
 import { connect } from 'react-redux'
 import AuthActions from '../Redux/AuthRedux'
+import LocationActions from '../Redux/LocationRedux'
 
 const prefix = Platform.OS === 'android' ? 'ga.fooname.app://login/' : 'ga.fooname.app://'
 
@@ -11,6 +12,7 @@ class ReduxNavigation extends React.Component {
   componentDidMount () {
     NavigationService.setTopLevelNavigator(this._input)
     this.props.getAccessToken()
+    this.props.getLocation()
   }
   render () {
     return <AppNavigation
@@ -29,6 +31,7 @@ const mapStateToProps = state => {
   return { user }
 }
 const mapDispatchToProps = (dispatch) => ({
+  getLocation: () => dispatch(LocationActions.locationRequest()),
   getAccessToken: () => dispatch(AuthActions.authRequest()),
   logout: () => dispatch(AuthActions.logout())
 })

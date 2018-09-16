@@ -10,7 +10,8 @@ export const reducers = combineReducers({
   search: require('./SearchRedux').reducer,
   user: require('./UserRedux').reducer,
   updateUser: require('./UpdateUserRedux').reducer,
-  auth: require('./AuthRedux').reducer
+  auth: require('./AuthRedux').reducer,
+  location: require('./LocationRedux').reducer
 })
 
 export default () => {

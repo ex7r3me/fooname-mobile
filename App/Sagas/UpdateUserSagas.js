@@ -13,6 +13,7 @@
 import { call, put } from 'redux-saga/effects'
 import UpdateUserActions from '../Redux/UpdateUserRedux'
 import UserActions from '../Redux/UserRedux'
+import SnackbarActions from '../Redux/SnackbarRedux'
 
 export function * patchUserProfile (api, action) {
   const { profile } = action
@@ -21,8 +22,8 @@ export function * patchUserProfile (api, action) {
   if (response.ok) {
     yield put(UpdateUserActions.updateUserSuccess())
     yield put(UserActions.profileSuccess(response.data))
-
   } else {
     yield put(UpdateUserActions.updateUserFailure())
+    yield put(SnackbarActions.snackbarRequest({ message: `Couldn't update you profile please try again` }))
   }
 }

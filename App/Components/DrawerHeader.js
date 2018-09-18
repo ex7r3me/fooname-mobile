@@ -24,7 +24,7 @@ export default class DrawerHeader extends Component {
         >
           <UserAvatar style={styles.avatar}
             size='64'
-            name={this.props.name}
+            name={this.props.name || 'Foo Name'}
             src={this.props.profileImage} />
         </ImageBackground>
 

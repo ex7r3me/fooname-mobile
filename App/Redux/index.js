@@ -11,7 +11,8 @@ export const reducers = combineReducers({
   user: require('./UserRedux').reducer,
   updateUser: require('./UpdateUserRedux').reducer,
   auth: require('./AuthRedux').reducer,
-  location: require('./LocationRedux').reducer
+  location: require('./LocationRedux').reducer,
+  snackbar: require('./SnackbarRedux').reducer
 })
 
 export default () => {

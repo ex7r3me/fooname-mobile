@@ -92,7 +92,8 @@
       "<rootDir>/Tests/Setup"
     ],
     "preset": "react-native",
-    "collectCoverage": true
+    "collectCoverage": true,
+    "testEnvironment": "node"
   },
   "config": {},
   "standard": {

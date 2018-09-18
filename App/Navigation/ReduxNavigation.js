@@ -5,7 +5,7 @@ import NavigationService from '../Services/NavigationService'
 import { connect } from 'react-redux'
 import AuthActions from '../Redux/AuthRedux'
 import LocationActions from '../Redux/LocationRedux'
-
+import UserActions from '../Redux/UserRedux'
 const prefix = Platform.OS === 'android' ? 'ga.fooname.app://login/' : 'ga.fooname.app://'
 
 class ReduxNavigation extends React.Component {
@@ -33,6 +33,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch) => ({
   getLocation: () => dispatch(LocationActions.locationRequest()),
   getAccessToken: () => dispatch(AuthActions.authRequest()),
+  getProfile: () => dispatch(UserActions.profileRequest()),
   logout: () => dispatch(AuthActions.logout())
 })
 

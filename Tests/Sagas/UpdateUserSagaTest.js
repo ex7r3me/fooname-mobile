@@ -11,7 +11,7 @@ import { call, put } from 'redux-saga/effects'
 import { patchUserProfile } from '../../App/Sagas/UpdateUserSagas'
 import UpdateUserActions from '../../App/Redux/UpdateUserRedux'
 import UserActions from '../../App/Redux/UserRedux'
-
+import SnackbarActions from '../../App/Redux/SnackbarRedux'
 const TEST_USER = require('../../App/Fixtures/testUser.json')
 
 const stepper = (fn) => (mock) => fn.next(mock).value
@@ -44,8 +44,14 @@ test('success path update profile', () => {
 test('failure path', () => {
   const response = {ok: false}
   const step = stepper(patchUserProfile(FixtureAPI, {profile: TEST_USER}))
-  // Step 1: Htest the api
   step()
-  // Step 2: Failed response.
   expect(step(response)).toEqual(put(UpdateUserActions.updateUserFailure()))
+})
+
+test('failure path snackbar', () => {
+  const response = {ok: false}
+  const step = stepper(patchUserProfile(FixtureAPI, {profile: TEST_USER}))
+  step()
+  step(response)
+  expect(step(response)).toEqual(put(SnackbarActions.snackbarRequest({ message: `Couldn't update you profile please try again` })))
 })

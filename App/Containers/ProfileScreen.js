@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image } from 'react-native'
+import { Text, View, Image, ActivityIndicator } from 'react-native'
 import { Toolbar, Button } from 'react-native-material-ui'
 import styles from './Styles/ProfileScreenStyle'
 import { Emoji, Picker } from 'emoji-mart-native'
@@ -32,8 +32,8 @@ class ProfileScreen extends Component {
     this.setState({showEmojiPicker: false})
   }
   render () {
-    console.log(this.props)
     let EmojiPicker = null
+    let activityIndicator = null
     if (this.state.showEmojiPicker) {
       EmojiPicker = (
         <Picker
@@ -43,7 +43,9 @@ class ProfileScreen extends Component {
         />
       )
     }
-  
+    if (this.props.showActivityIndicator) {
+      activityIndicator = <ActivityIndicator size='large' color='#0000ff' />
+    }
     return (
       <View style={styles.mainContainer}>
         <Toolbar
@@ -52,9 +54,6 @@ class ProfileScreen extends Component {
             this.props.navigation.openDrawer()
           }}
           centerElement='Profile'
-          onRightElementPress={label => {
-            console.log(label)
-          }}
         />
         {EmojiPicker}
         <View>
@@ -90,11 +89,13 @@ class ProfileScreen extends Component {
             <Button
               raised
               accent
+              disabled={this.props.fetchingProfile}
               text='Emoji Selector'
               onPress={() => {
                 this.setState({ showEmojiPicker: true })
               }}
             />
+            {activityIndicator}
           </View>
         </View>
       </View>
@@ -104,6 +105,7 @@ class ProfileScreen extends Component {
 
 const mapStateToProps = state => {
   const user = state.user
+  const updateUser = state.updateUser
   const location = state.location
   return {
     profile: {
@@ -116,7 +118,9 @@ const mapStateToProps = state => {
       username: user.username,
       emoji: user.emoji
     },
-    hasLocation: location.hasLocation
+    hasLocation: location.hasLocation,
+    fetchingProfile: updateUser.fetching,
+    showActivityIndicator: updateUser.fetching || location.fetching
   }
 }
 const mapDispatchToProps = (dispatch) => ({

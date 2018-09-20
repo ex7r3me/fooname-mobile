@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
-import { Toolbar, Button } from 'react-native-material-ui'
+import { View, CheckBox } from 'react-native'
+import { Formik } from 'formik'
+import { Toolbar, Button, Text } from 'react-native-material-ui'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -9,10 +10,15 @@ import { connect } from 'react-redux'
 import styles from './Styles/SettingsScreenStyle'
 
 class SettingsScreen extends Component {
+  state = {
+    autoUpdate: false
+  }
   static navigationOptions = {
     drawerLabel: 'Settings'
   }
+  handleSubmit = () => {
 
+  }
   render () {
     const props = this.props
     return (
@@ -23,18 +29,30 @@ class SettingsScreen extends Component {
             props.navigation.openDrawer()
           }}
           centerElement='Settings'
-          onRightElementPress={label => {
-            console.log(label)
-          }}
         />
         <View>
           <View style={styles.section}>
-            <Button
-              raised
-              primary
-              style={styles.button}
-              text='Save Setting'
-            />
+            <Formik
+              onSubmit={values => this.handleSubmit(values)}
+          >
+              {({ handleChange, handleSubmit, values }) => (
+                <View>
+                  <CheckBox
+                    value={this.state.autoUpdate}
+                    onValueChange={() => this.setState({ autoUpdate: !this.state.autoUpdate })}
+                      />
+                  <Button
+                    onPress={handleSubmit}
+                    raised
+                    primary
+                    class='ma-2'
+                    disabled={this.props.isFetching}
+                    text='Save Settings'
+                />
+                </View>
+            )}
+            </Formik>
+
           </View>
         </View>
       </View>

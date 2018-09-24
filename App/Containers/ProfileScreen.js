@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import { Text, View, Image, ActivityIndicator } from 'react-native'
 import { Toolbar, Button } from 'react-native-material-ui'
+import data from 'emoji-mart-native/data/twitter.json'
+import dataRequires from '../assets/emojis/twitter'
 import styles from './Styles/ProfileScreenStyle'
-import { Emoji, Picker } from 'emoji-mart-native'
+import { Emoji, NimblePicker } from 'emoji-mart-native'
 import UserActions from '../Redux/UserRedux'
 import UpdateUserActions from '../Redux/UpdateUserRedux'
 import AuthActions from '../Redux/AuthRedux'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+const {emojis: localEmojis} = dataRequires
 
 class ProfileScreen extends Component {
   static navigationOptions = {
@@ -36,9 +39,11 @@ class ProfileScreen extends Component {
     let activityIndicator = null
     if (this.state.showEmojiPicker) {
       EmojiPicker = (
-        <Picker
+        <NimblePicker
           onPressClose={() => this.setState({ showEmojiPicker: false })}
           set='twitter'
+          data={data}
+          useLocalImages={localEmojis}
           onSelect={this.addEmoji}
         />
       )

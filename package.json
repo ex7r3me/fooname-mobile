@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "apisauce": "^0.14.2",
-    "emoji-mart-native": "^0.2.15-beta",
+    "emoji-datasource-twitter": "^4.1.0",
+    "emoji-mart-native": "^0.4.0-beta",
     "format-json": "^1.0.3",
     "formik": "^1.0.3",
     "identity-obj-proxy": "^3.0.0",

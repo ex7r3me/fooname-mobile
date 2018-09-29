@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import { Text, View, Image, ActivityIndicator } from 'react-native'
 import { Toolbar, Button } from 'react-native-material-ui'
-import data from 'emoji-mart-native/data/twitter.json'
-import dataRequires from '../assets/emojis/twitter'
 import styles from './Styles/ProfileScreenStyle'
 import { Emoji, NimblePicker } from 'emoji-mart-native'
 import UserActions from '../Redux/UserRedux'
 import UpdateUserActions from '../Redux/UpdateUserRedux'
 import AuthActions from '../Redux/AuthRedux'
 import { connect } from 'react-redux'
+import data from 'emoji-mart-native/data/twitter'
+import dataRequires from 'emoji-mart-native/data/local-images/twitter'
+
 import _ from 'lodash'
 const {emojis: localEmojis} = dataRequires
 
@@ -26,9 +27,6 @@ class ProfileScreen extends Component {
       showEmojiPicker: false
     }
   }
-  componentDidMount () {
-
-  }
   addEmoji = (emojiObj) => {
     const emoji = emojiObj.id
     this.props.saveProfile({emoji})
@@ -37,17 +35,6 @@ class ProfileScreen extends Component {
   render () {
     let EmojiPicker = null
     let activityIndicator = null
-    if (this.state.showEmojiPicker) {
-      EmojiPicker = (
-        <NimblePicker
-          onPressClose={() => this.setState({ showEmojiPicker: false })}
-          set='twitter'
-          data={data}
-          useLocalImages={localEmojis}
-          onSelect={this.addEmoji}
-        />
-      )
-    }
     if (this.props.showActivityIndicator) {
       activityIndicator = <ActivityIndicator size='large' color='#0000ff' />
     }
@@ -84,21 +71,21 @@ class ProfileScreen extends Component {
             </View>
             <Text>{_.get(this.props, 'profile.baseUsername', '')}</Text>
             <Text>City Name: {_.get(this.props, 'profile.cityName', '')}</Text>
+            <View>
+              <NimblePicker
+                onPressClose={() => this.setState({ showEmojiPicker: false })}
+                set='twitter'
+                data={data}
+                useLocalImages={localEmojis}
+                onSelect={this.addEmoji}
+        />
+            </View>
             <Button
               raised
               primary
               disabled={!this.props.hasLocation}
               style={styles.button}
               text='Save By Location'
-            />
-            <Button
-              raised
-              accent
-              disabled={this.props.fetchingProfile}
-              text='Emoji Selector'
-              onPress={() => {
-                this.setState({ showEmojiPicker: true })
-              }}
             />
             {activityIndicator}
           </View>
